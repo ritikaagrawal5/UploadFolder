@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Document</title>
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+            crossorigin="anonymous"
+            
+        />
+    </head>
+    <body>
+        <div class="styleit" style="background-image: url(img.jpg) ; background-size: contain; background-repeat: repeat; padding: 10rem 20rem;" >
+        <div class="card" style="width: 56rem; padding: 5rem 5rem; background-color: black;">
+            <!-- <img class="card-img-top" src="pexels-pixabay-159519.jpg" alt="Card image cap"> -->
+            <div class="card-body">
+              <h5 class="card-title" style="color: white; font-size:xx-large;">Select a Folder</h5>
+              <p class="card-text" style="color: rgb(134, 187, 220) ;">This is a Demo upload zone. Selected files are not actually uploaded.</p>
+             
+              <div>
+                <label for="files" class="btn btn-outline-primary">Choose Folder</label>
+                <input
+                    type="file"
+                    id="files"
+                    placeholder="Choose Folder"
+                    webkitdirectory
+                    directory
+                    onchange="add(event)"
+                    style="visibility: hidden"
+                />
+            </div>
+
+            </div>
+          </div>
+       
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" style="color:white;">File Name</th>
+                    <th scope="col" style="color:white">File Size</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div
+            class="modal fade"
+            id="infoModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">
+                            File Info
+                        </h1>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+            crossorigin="anonymous"
+        ></script>
+
+        <script>
+            var files = [];
+            function add(e) {
+                const units = ['bytes', 'KB', 'MB', 'GB', 'TB'];
+
+                function bytesSize(x) {
+                    let l = 0,
+                        n = parseInt(x, 10) || 0;
+
+                    while (n >= 1024 && ++l) {
+                        n = n / 1024;
+                        if (l == 4) break;
+                    }
+
+                    return n.toFixed(n < 10 && l > 0 ? 1 : 0) + ' ' + units[l];
+                }
+
+                for (let i = 0; i < e.target.files.length; i++) {
+                    files.push({
+                        name: e.target.files[i].name
+                            .split('.')
+                            .slice(0, -1)
+                            .join('.'),
+                        ext: e.target.files[i].name.split('.').pop(),
+                        size: bytesSize(e.target.files[i].size),
+                        type: e.target.files[i].type,
+                    });
+                }
+
+                files.forEach((file, idx) => {
+                    document.querySelector('table tbody').innerHTML += `
+                       <tr>
+                            <th scope="row">${file.name}</th>
+                            <td>${file.size}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#infoModal" onclick="addData(${idx})">
+                                    Info
+                                </button>
+                            </td>
+                        </tr> 
+                    `;
+                });
+            }
+
+            function addData(idx) {
+                document.getElementsByClassName('modal-body')[0].innerHTML = `
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">File Name: ${files[idx].name}</li>
+                        <li class="list-group-item">File Size: ${files[idx].size}</li>
+                        <li class="list-group-item">File Extension: ${files[idx].ext}</li>
+                        <li class="list-group-item">File Type: ${files[idx].type}</li>
+                    </ul>
+                `;
+            }
+        </script>
+        </div>
+
+        <footer class="bg-dark text-center text-black">
+            <!-- Grid container -->
+            <div class="container p-4 pb-0">
+              <!-- Section: Social media -->
+              <section class="mb-4">
+               
+                <!-- Linkedin -->
+                <a
+                  class="btn text-white btn-floating m-1"
+                  style="background-color: #0082ca;"
+                  href="https://www.linkedin.com/in/ritikaagrawall/"
+                  role="button"
+                  > <i class="fa fa-linkedin" aria-hidden="true"></i></a>
+
+               
+                <!-- Github -->
+                <a
+                  class="btn text-white btn-floating m-1"
+                  style="background-color: grey;"
+                  href="https://github.com/ritikaagrawal5"
+                  role="button"
+                  ><i class="fa fa-github" aria-hidden="true"></i></a>
+              </section>
+              <!-- Section: Social media -->
+            </div>
+            <!-- Grid container -->
+          
+            <!-- Copyright -->
+            <div class="text-center p-3" style="color: rgb(0, 128, 122) ; font-weight: bold;">
+              Made with love by :
+              <a class="text-white" href="https://www.linkedin.com/in/ritikaagrawall/" style="color:rgb(0,128,122);">Ritika Agrawal</a>
+            </div>
+            <!-- Copyright -->
+          </footer>
+    </body>
+</html>
